@@ -1,4 +1,4 @@
 FROM nginx:alpine
 
-COPY ./phpapp /phpapp/
+COPY ./phpapp-dummy /phpapp/
 COPY ./nginx/default.conf /etc/nginx/conf.d/
