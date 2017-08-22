@@ -1,0 +1,36 @@
+version: '3'
+
+services:
+  mysql:
+    image: mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=toor
+    deploy:
+      placement:
+        constraints: [node.role == manager]
+
+  mailcatcher:
+    image: schickling/mailcatcher
+    ports:
+      - "1080:1080"
+
+  application:
+    image: blackikeeagle/swarm-pimcore-php
+    environment:
+      - DEVELOPMENT=0
+    volumes:
+      - pimcore-var:/phpapp/website/var
+    deploy:
+      replicas: 2
+
+  nginx:
+    image: blackikeeagle/swarm-pimcore-nginx
+    volumes:
+      - pimcore-var:/phpapp/website/var
+    ports:
+      - "80:80"
+
+volumes:
+  pimcore-var:
+    external: true
+

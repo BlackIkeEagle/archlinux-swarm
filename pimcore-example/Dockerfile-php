@@ -1,0 +1,9 @@
+FROM dockerwest/php-pimcore:7.1
+
+COPY ./pimcore /phpapp/
+COPY ./phpimage /
+RUN /install.sh
+RUN rm /install*
+
+ENV DEVELOPMENT=0
+

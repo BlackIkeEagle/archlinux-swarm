@@ -1,0 +1,31 @@
+version: '3'
+
+services:
+  mysql:
+    image: mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=toor
+      - DOMAIN_NAME=mysql.pimcore.dev
+    command: --innodb-doublewrite=0
+
+  mailcatcher:
+    image: schickling/mailcatcher
+    environment:
+      - DOMAIN_NAME=mailcatcher.pimcore.dev
+
+  application:
+    image: dockerwest/php-pimcore:7.1
+    environment:
+      - C_UID=${C_UID:-1000}
+      - C_GID=${G_UID:-1000}
+      - DEVELOPMENT=noprofile
+    volumes:
+      - ./pimcore:/phpapp
+
+  nginx:
+    image: dockerwest/nginx-pimcore:mainline
+    environment:
+      - VIRTUAL_HOST=pimcore.dev,www.pimcore.dev
+    volumes:
+      - ./pimcore:/phpapp
+
